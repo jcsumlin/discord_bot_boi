@@ -17,11 +17,9 @@ bot = commands.Bot(command_prefix="!")
 
 client = discord.Client()
 
-@bot.command(pass_context=True)
-async def join(ctx):
-   author = ctx.message.author
-   voice_channel = author.voice_channel
-   vc = await client.join_voice_channel(voice_channel)
+@bot.command()
+async def greet(ctx):
+    await ctx.send(":smiley: :wave: Hello, there!")
 
 @client.event
 async def on_message(message):
