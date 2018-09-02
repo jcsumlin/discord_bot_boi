@@ -30,6 +30,10 @@ async def on_message(message):
     if message.content.startswith('!ded'):
         msg = 'https://media.giphy.com/media/3oriff4xQ7Oq2TIgTu/giphy.gif'
         await client.send_message(message.channel, msg)
+    if message.content.startswith('!lockdown'):
+        msg = 'THIS DISCORD IS NOW ON LOCKDOWN! EVERYONE RETURN TO YOUR CELLS AND PREPARE FOR A SHAKEDOWN'
+        gif = 'https://media1.tenor.com/images/66a0e064ab1aaff80f79a4801b3102a0/tenor.gif?itemid=8691616'
+        await client.send_message(message.channel, msg + gif)
 
 
 @client.event
