@@ -4,13 +4,24 @@ from datetime import datetime
 import re
 import configparser
 import json
+from discord.ext import commands
+from discord.ext.commands import Bot
+from discord.voice_client import VoiceClient
+import asyncio
 
 
 config = configparser.ConfigParser()
 config.read('auth.ini')
 TOKEN = config.get("auth", "discord-token")
+bot = commands.Bot(command_prefix="!")
 
 client = discord.Client()
+
+@bot.command(pass_context=True)
+async def join(ctx):
+   author = ctx.message.author
+   voice_channel = author.voice_channel
+   vc = await client.join_voice_channel(voice_channel)
 
 @client.event
 async def on_message(message):
@@ -31,7 +42,7 @@ async def on_message(message):
         msg = 'https://media.giphy.com/media/3oriff4xQ7Oq2TIgTu/giphy.gif'
         await client.send_message(message.channel, msg)
     if message.content.startswith('!lockdown'):
-        msg = 'THIS DISCORD IS NOW ON LOCKDOWN! EVERYONE RETURN TO YOUR CELLS AND PREPARE FOR A SHAKEDOWN'
+        msg = 'THIS DISCORD IS NOW ON LOCKDOWN! EVERYONE RETURN TO YOUR CELLS AND PREPARE FOR A SHAKEDOWN\r\r'
         gif = 'https://media1.tenor.com/images/66a0e064ab1aaff80f79a4801b3102a0/tenor.gif?itemid=8691616'
         await client.send_message(message.channel, msg + gif)
 
