@@ -6,7 +6,7 @@ from datetime import datetime
 import re
 
 BOT_PREFIX = "!"
-TOKEN = "NDg0NDYxMDM1MzE1NTI3NzAw.DmiWYQ.JLuuih6E16Z_CENsFMYt97BVzTY"
+TOKEN = ""
 client = Bot(command_prefix=BOT_PREFIX)
 
 lick_self = ['{username} stretches their leg towards the sky and begins to lick themself like a cat',
