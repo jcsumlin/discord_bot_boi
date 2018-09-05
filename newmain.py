@@ -22,6 +22,7 @@ lick_user = ['{username} sneaks up behind {victim} adn licks their elbow, I don\
              '{username} slyly licks {victim} on the cheek, blushing intensely',
              '{username} walks over to {victim} to wisper a secret in their ear, but licks them instead!',
              '{username} tries to lick {victim} but they notice and roundhouse them into next week.']
+bdsm_self = ['{username} pulls his']
 
 @client.command(name='8ball',
                 description="This command will answer all of your questions just like an 8-Ball would!",
@@ -125,6 +126,15 @@ async def roll():
     else:
         msg = "[" + str(msg) + "] "
     await client.say(msg + ":game_die:")
+
+@client.command(name='phoenix',
+                pass_context=False)
+async def phoenix():
+    date_of_last_episode = datetime.strptime('Sep 2 2018 10:00AM',
+                                             '%b %d %Y %I:%M%p')  # Set from config
+    days = re.search('\d{1,3}\s', str(datetime.now() - date_of_last_episode)).group(0)
+    msg = "Days since last word from PhoenixVersion1:\n\n" + "[" + days + "Days]"
+    await client.say(msg)
 
 
 @client.event
