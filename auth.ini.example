@@ -1,3 +1,7 @@
 [auth]
 discord-token=
 hiatus_date=
+general_channel=
+mod_role=
+admin_role=
+custom_role=
