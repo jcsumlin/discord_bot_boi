@@ -10,6 +10,7 @@ from discord.ext.commands import Bot
 config = configparser.ConfigParser()
 config.read('auth.ini')
 
+SEPERATOR = "\n------\n"
 BOT_PREFIX = "!"
 TOKEN = config.get('auth', 'discord-token')
 client = Bot(command_prefix=BOT_PREFIX)
@@ -27,7 +28,41 @@ lick_user = ['{username} sneaks up behind {victim} adn licks their elbow, I don\
              '{username} slyly licks {victim} on the cheek, blushing intensely',
              '{username} walks over to {victim} to wisper a secret in their ear, but licks them instead!',
              '{username} tries to lick {victim} but they notice and roundhouse them into next week.']
-bdsm_self = ['{username} pulls a book out of their bookshelf revealing a hidden doorway. Could this be a sex dungeon?']
+bdsm_self = ['{author} pulls a book out of their bookshelf revealing a hidden doorway. Could this be their sex dungeon?',
+             'The channel looks on in horror as {author} exposes their bdsm collection.']
+bdsm_user = ['{author} ties up {victim} with and gags them.',
+             '{author} whips {victim} playfully.',
+             '{victim} pleads for mercy, but {author} knows they secretly like it and continues whipping them.',
+             '{author} steps on {victim}\'s crotch, causing them to moan in both agony and pleasure.(edited)',
+             '{victim} looks on in horror as {author} reveals a collection of whips that hang from the wall.']
+bdsm_bot = ['Sorry, i\'m with Lapis :blush:',
+            'Only Lapis\' chains and whips can touch me.',
+            'I\'m sorry, I only like you as a friend']
+
+
+def user_is_mod(user):
+    author_roles = user.roles
+    has_right_role = False
+    for role in author_roles:
+        if role.name == config.get('auth', 'mod_role'):
+            has_right_role = True
+    return has_right_role
+
+def user_is_admin(user):
+    author_roles = user.roles
+    has_right_role = False
+    for role in author_roles:
+        if role.name == config.get('auth', 'admin_role'):
+            has_right_role = True
+    return has_right_role
+
+def user_is_custom_role(user):
+    author_roles = user.roles
+    has_right_role = False
+    for role in author_roles:
+        if role.name == config.get('auth', 'custom_role'):
+            has_right_role = True
+    return has_right_role
 
 @client.command(name='8ball',
                 description="This command will answer all of your questions just like an 8-Ball would!",
@@ -68,9 +103,9 @@ async def eight_ball(ctx):
 async def killbind(ctx, victim: discord.Member):
     author = ctx.message.author
     if victim.id == author.id:
-        message = '{username} bids farewell to this cruel world.'.format(
+        message = '{username} bid farewell to this cruel world.'.format(
             username=victim.mention)
-    elif victim.name == "Peridot_Bot":
+    elif victim.name == "Peribot":
         message = 'Silly human you can make me killbind myself!'
     elif victim.id != author.id:
         message = "{username} tricks {victim} into bidding farewell to this cruel world.".format(username=author.mention, victim=victim.mention)
@@ -103,6 +138,21 @@ async def lockdown():
     gif = 'https://media1.tenor.com/images/66a0e064ab1aaff80f79a4801b3102a0/tenor.gif?itemid=8691616'
     await client.say(msg + gif)
 
+@client.command(name='bdsm',
+                description="This command will bdsm a user or yourself",
+                breif="BDSM fun",
+                pass_context=True)
+async def lick(ctx, victim: discord.Member):
+    author = ctx.message.author
+    if victim.id == author.id:
+        message = random.choice(bdsm_self).format(author=victim.mention)
+    elif victim.name == "Peribot":
+        message = random.choice(bdsm_bot)
+    elif victim.id != author.id:
+        message = random.choice(bdsm_user).format(author=author.mention, victim=victim.mention)
+    else:
+        message = 'That\'s not how this command works you bint. {author}'.format(author=ctx.message.author.mention)
+    await client.say(message)
 
 @client.command(name='lick',
                 description="This command will lick a user",
@@ -112,8 +162,8 @@ async def lick(ctx, victim: discord.Member):
     author = ctx.message.author
     if victim.id == author.id:
         message = random.choice(lick_self).format(username=victim.mention) + '\r\r' + random.choice(lick_gif)
-    elif victim.name == "Peridot_Bot":
-        message = 'AGH Gross! You got slobber in my circuits, J_C___ will not be happy!'
+    elif victim.name == "Peribot":
+        message = 'AGH Gross! You got slobber in my circuits, J\_C\_\_\_ will not be happy!'
     elif victim.id != author.id:
         message = random.choice(lick_user).format(username=author.mention, victim=victim.mention) + '\r\r' + random.choice(lick_gif)
     else:
@@ -148,20 +198,44 @@ async def ping():
 
 @client.command(pass_context=True)
 async def newinvite(ctx):
-    author = ctx.message.author
-    invite_url = client.create_invite(max_age=15, max_uses=1).url
-    await client.say("**NEW INVITE LINK CREATED FOR {author}**\r{invite_url}\r`This link has one use and expires in 15 minutes`".format(author=author, invite_url=invite_url))
+    if user_is_mod(ctx.message.author) or user_is_admin(ctx.message.author) or user_is_custom_role(ctx.message.author):
+        max_age = 0
+        max_age_text = "Never"
+        max_uses = 0
+        max_uses_text = "Unlimited"
+    else:
+        max_age = 900
+        max_age_text = "15 Minutes"
+        max_uses = 3
+        max_uses_text = str(max_uses)
+
+    invitelinknew = await client.create_invite(destination=ctx.message.channel,
+                                            max_uses=max_uses, max_age=max_age)
+    embedMsg = discord.Embed(color=0x90ee90,title="__NEW INVITE LINK GENERATED__")
+    embedMsg.add_field(name="Discord Invite Link", value=invitelinknew)
+    embedMsg.add_field(name="Discord Invite Uses", value=max_uses_text)
+    embedMsg.add_field(name="Discord Invite Expiration", value=max_age_text)
+    embedMsg.set_footer(text="Discord server invite link generated by {author}".format(author=ctx.message.author))
+    await client.send_message(ctx.message.channel, embed=embedMsg)
+
+@client.command(pass_context=True)
+async def changegame(ctx, game):
+    if user_is_mod(ctx.message.author) or user_is_admin(ctx.message.author) or user_is_custom_role(ctx.message.author):
+        await client.change_presence(game=Game(name=game))
+        embedMsg = discord.Embed(color=0x90ee90, title="Game changed successfully")
+        await client.send_message(ctx.message.channel, embed=embedMsg)
+    else:
+        await client.say("You do not have permissions for this command! :robot:")
 
 
 @client.event
 async def on_ready():
     await client.change_presence(game=Game(name="Python 3.6"))
-    await client.say("Rebooting procedures have started, please hold.")
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
     print('------')
-    await client.say("%s booting process complete." % client.user.name)
+    # await client.say("%s booting process complete." % client.user.name)
 
 
 client.run(TOKEN)
