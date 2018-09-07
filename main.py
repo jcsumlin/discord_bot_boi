@@ -1,4 +1,3 @@
-import configparser
 import random
 import re
 from datetime import datetime
@@ -6,9 +5,6 @@ from datetime import datetime
 import discord
 from discord import Game
 from discord.ext.commands import Bot
-
-config = configparser.ConfigParser()
-config.read('auth.ini')
 
 SEPERATOR = "\n------\n"
 BOT_PREFIX = "!"
@@ -44,7 +40,7 @@ def user_is_mod(user):
     author_roles = user.roles
     has_right_role = False
     for role in author_roles:
-        if role.name == config.get('auth', 'mod_role'):
+        if role.name == process.env.mod_role:
             has_right_role = True
     return has_right_role
 
@@ -52,7 +48,7 @@ def user_is_admin(user):
     author_roles = user.roles
     has_right_role = False
     for role in author_roles:
-        if role.name == config.get('auth', 'admin_role'):
+        if role.name == process.env.admin_role:
             has_right_role = True
     return has_right_role
 
@@ -60,7 +56,7 @@ def user_is_custom_role(user):
     author_roles = user.roles
     has_right_role = False
     for role in author_roles:
-        if role.name == config.get('auth', 'custom_role'):
+        if role.name == process.env.custom_role:
             has_right_role = True
     return has_right_role
 
