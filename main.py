@@ -12,7 +12,7 @@ config.read('auth.ini')
 
 SEPERATOR = "\n------\n"
 BOT_PREFIX = "!"
-TOKEN = config.get('auth', 'discord-token')
+TOKEN = process.env.token
 client = Bot(command_prefix=BOT_PREFIX)
 
 lick_self = ['{username} stretches their leg towards the sky and begins to lick themself like a cat',
