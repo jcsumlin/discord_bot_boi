@@ -30,7 +30,7 @@ bdsm_self = ['{author} pulls a book out of their bookshelf revealing a hidden do
 bdsm_user = ['{author} ties up {victim} with and gags them.',
              '{author} whips {victim} playfully.',
              '{victim} pleads for mercy, but {author} knows they secretly like it and continues whipping them.',
-             '{author} steps on {victim}\'s crotch, causing them to moan in both agony and pleasure.(edited)',
+             '{author} steps on {victim}\'s crotch, causing them to moan in both agony and pleasure.',
              '{victim} looks on in horror as {author} reveals a collection of whips that hang from the wall.']
 bdsm_bot = ['Sorry, i\'m with Lapis :blush:',
             'Only Lapis\' chains and whips can touch me.',
