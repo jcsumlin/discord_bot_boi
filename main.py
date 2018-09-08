@@ -27,7 +27,7 @@ lick_user = ['{username} sneaks up behind {victim} adn licks their elbow, I don\
              '{username} tries to lick {victim} but they notice and roundhouse them into next week.']
 bdsm_self = ['{author} pulls a book out of their bookshelf revealing a hidden doorway. Could this be their sex dungeon?',
              'The channel looks on in horror as {author} exposes their bdsm collection.']
-bdsm_user = ['{author} ties up {victim} with and gags them.',
+bdsm_user = ['{author} ties up {victim} with rope and gags them.',
              '{author} whips {victim} playfully.',
              '{victim} pleads for mercy, but {author} knows they secretly like it and continues whipping them.',
              '{author} steps on {victim}\'s crotch, causing them to moan in both agony and pleasure.',
