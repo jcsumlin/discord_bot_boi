@@ -67,6 +67,11 @@ def user_is_custom_role(user):
                 aliases=['eight_ball', '8b', 'eightball'],
                 pass_context=True)
 async def eight_ball(ctx):
+    """
+    Shakes an 8Ball to your question!
+    :param ctx: Message Context.
+    :return:
+    """
     possible_responses = [
         'It is certain.',
         'It is decidedly so.',
@@ -98,6 +103,12 @@ async def eight_ball(ctx):
                 aliases=['kb', 'kill-bind'],
                 pass_context=True)
 async def killbind(ctx, victim: discord.Member):
+    """
+    Killbinds a user! Goodbye cruel world!
+    :param ctx: the message comtext
+    :param victim: the vistim of this killbinding
+    :return:
+    """
     author = ctx.message.author
     if victim.id == author.id:
         message = '{username} bid farewell to this cruel world.'.format(
@@ -116,16 +127,20 @@ async def killbind(ctx, victim: discord.Member):
                 breif="The hiatus is cold and long",
                 pass_context=False)
 async def hiatus():
+    """
+    Will return the number of days since the last episode of SVTFOE. The nexus of the hiatus...
+    :return: Perforated Message with calculated days
+    """
     date_of_last_episode = datetime.strptime('Apr 7 2018 01:00AM',
                                              '%b %d %Y %I:%M%p')  # Set from config
     days = re.search('\d{1,3}\s', str(datetime.now() - date_of_last_episode)).group(0)
     msg = "Days since last episode:\n\n" + "[" + days + "Days]"
-    await client.say(msg)
+    return await client.say(msg)
 
 @client.command(pass_context=True)
 async def role(ctx, role: discord.Role = None, user: discord.Member = None):
     """
-    Toggle whether or not you have a role. Usage: `!role DivinityPing`. Can take roles with spaces.
+    Toggle whether or not you have a role. Usage: `!role Admin`. Can take roles with spaces.
     :param role: Anything after "role"; should be the role name.
     :param user: Any user
     """
@@ -160,12 +175,20 @@ async def role(ctx, role: discord.Role = None, user: discord.Member = None):
 
 @client.command()
 async def ded():
+    """
+    Is the server ded?
+    :return: ded.
+    """
     msg = 'https://media.giphy.com/media/3oriff4xQ7Oq2TIgTu/giphy.gif'
     await client.say(msg)
 
 
 @client.command()
 async def lockdown():
+    """
+    Puts the server on lockdown! WEE WOO WEE WOO!
+    :return:
+    """
     msg = '**THIS DISCORD IS NOW ON LOCKDOWN!**\r\r EVERYONE RETURN TO YOUR CELLS AND PREPARE FOR A SHAKEDOWN\r\r'
     gif = 'https://media1.tenor.com/images/66a0e064ab1aaff80f79a4801b3102a0/tenor.gif?itemid=8691616'
     await client.say(msg + gif)
@@ -175,6 +198,12 @@ async def lockdown():
                 breif="bdsm fun",
                 pass_context=True)
 async def bdsm(ctx, victim: discord.Member):
+    """
+    BDSM fun with you users.
+    :param ctx:
+    :param victim:
+    :return:
+    """
     author = ctx.message.author
     if victim.id == author.id:
         message = random.choice(bdsm_self).format(author=victim.mention)
@@ -191,6 +220,12 @@ async def bdsm(ctx, victim: discord.Member):
                 breif="Dont killbind me please",
                 pass_context=True)
 async def lick(ctx, victim: discord.Member):
+    """
+    Licking fun... just don't lick me!
+    :param ctx:
+    :param victim:
+    :return:
+    """
     author = ctx.message.author
     if victim.id == author.id:
         message = random.choice(lick_self).format(username=victim.mention) + '\r\r' + random.choice(lick_gif)
@@ -205,6 +240,10 @@ async def lick(ctx, victim: discord.Member):
 
 @client.command(aliases=['r'])
 async def roll():
+    """
+    rolls a d20 die
+    :return:
+    """
     msg = random.randint(1,20)
     if msg == 1:
         msg = "***Critical Fail!***\r [1] "
@@ -214,22 +253,22 @@ async def roll():
         msg = "[" + str(msg) + "] "
     await client.say(msg + ":game_die:")
 
-@client.command(name='phoenix',
-                pass_context=False)
-async def phoenix():
-    date_of_last_episode = datetime.strptime('Sep 2 2018 10:00AM',
-                                             '%b %d %Y %I:%M%p')  # Set from config
-    days = re.search('\d{1,3}\s', str(datetime.now() - date_of_last_episode)).group(0)
-    msg = "Days since last word from PhoenixVersion1:\n\n" + "[" + days + "Days]"
-    await client.say(msg)
-
-
 @client.command()
 async def ping():
+    """
+    Pong!
+    :return:
+    """
     await client.say("Pong!")
 
 @client.command(pass_context=True)
 async def newinvite(ctx):
+    """
+    Creates a new invite to the server that has 1 use and lasts 15 minutes unless you are a
+    privileged user.
+    :param ctx:
+    :return:
+    """
     if user_is_mod(ctx.message.author) or user_is_admin(ctx.message.author) or user_is_custom_role(ctx.message.author):
         max_age = 0
         max_age_text = "Never"
@@ -238,7 +277,7 @@ async def newinvite(ctx):
     else:
         max_age = 900
         max_age_text = "15 Minutes"
-        max_uses = 3
+        max_uses = 1
         max_uses_text = str(max_uses)
 
     invitelinknew = await client.create_invite(destination=ctx.message.channel,
@@ -252,6 +291,12 @@ async def newinvite(ctx):
 
 @client.command(pass_context=True)
 async def changegame(ctx, game):
+    """
+    Changes my displayed game. Only for privileged users!
+    :param ctx: message context.
+    :param game: a string of the game I am playing.
+    :return:
+    """
     if user_is_mod(ctx.message.author) or user_is_admin(ctx.message.author) or user_is_custom_role(ctx.message.author):
         await client.change_presence(game=Game(name=game))
         embedMsg = discord.Embed(color=0x90ee90, title="Game changed successfully")
