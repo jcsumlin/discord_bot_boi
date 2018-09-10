@@ -122,6 +122,15 @@ async def hiatus():
     msg = "Days since last episode:\n\n" + "[" + days + "Days]"
     await client.say(msg)
 
+@client.command(name='timeout',
+                description="Put a user in the timeout zone!",
+                pass_context=True)
+async def timeout(ctx, victim : discord.User):
+    msg = ":police_car: {victim} has been put in timeout :police_car:".format(victim=victim.mention)
+    role = "488807515774255114"
+    await client.add_roles(victim, role)
+    await client.say(msg)
+
 
 @client.command()
 async def ded():
