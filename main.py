@@ -156,11 +156,11 @@ async def lockdown():
     gif = 'https://media1.tenor.com/images/66a0e064ab1aaff80f79a4801b3102a0/tenor.gif?itemid=8691616'
     await client.say(msg + gif)
 
-@client.command(name='lick',
-                description="This command will lick a user or yourself",
-                breif="licking fun",
+@client.command(name='bdsm',
+                description="This command will bdsm a user or yourself",
+                breif="bdsm fun",
                 pass_context=True)
-async def lick(ctx, victim: discord.Member):
+async def bdsm(ctx, victim: discord.Member):
     author = ctx.message.author
     if victim.id == author.id:
         message = random.choice(bdsm_self).format(author=victim.mention)
