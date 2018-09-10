@@ -122,14 +122,26 @@ async def hiatus():
     msg = "Days since last episode:\n\n" + "[" + days + "Days]"
     await client.say(msg)
 
-@client.command(name='timeout',
-                description="Put a user in the timeout zone!",
-                pass_context=True)
-async def timeout(ctx, victim : discord.Member):
-    msg = ":police_car: {victim} has been put in timeout :police_car:".format(victim=victim.mention)
-    role = "488807515774255114"
-    await client.add_roles(victim, role)
-    await client.say(msg)
+@client.command(pass_context=True)
+async def role(ctx, *, role: discord.Role = None):
+    """
+    Toggle whether or not you have a role. Usage: `!role DivinityPing`. Can take roles with spaces.
+    :param role: Anything after "role"; should be the role name.
+    """
+    if role is None:
+        return await client.say("You haven't specified a role! ")
+
+    if role not in ctx.message.server.roles:
+        return await client.say("That role doesn't exist.")
+
+    if role not in ctx.message.author.roles:
+        await client.add_roles(ctx.message.author, role)
+        return await client.say("{} role has been added to {}.".format(role, ctx.message.author.mention))
+
+    if role in ctx.message.author.roles:
+        await client.remove_roles(ctx.message.author, role)
+        return await client.say("{} role has been removed from {}."
+                                  .format(role, ctx.message.author.mention))
 
 
 @client.command()
@@ -144,9 +156,9 @@ async def lockdown():
     gif = 'https://media1.tenor.com/images/66a0e064ab1aaff80f79a4801b3102a0/tenor.gif?itemid=8691616'
     await client.say(msg + gif)
 
-@client.command(name='bdsm',
-                description="This command will bdsm a user or yourself",
-                breif="BDSM fun",
+@client.command(name='lick',
+                description="This command will lick a user or yourself",
+                breif="licking fun",
                 pass_context=True)
 async def lick(ctx, victim: discord.Member):
     author = ctx.message.author
