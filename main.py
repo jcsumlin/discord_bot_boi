@@ -129,28 +129,32 @@ async def role(ctx, role: discord.Role = None, user: discord.Member = None):
     :param role: Anything after "role"; should be the role name.
     :param user: Any user
     """
-    if role is None and user is None:
-        return await client.say("You haven't specified a role or a user! ")
+    if user_is_mod(ctx.message.author) or user_is_admin(ctx.message.author) or user_is_custom_role(
+        ctx.message.author):
+        if role is None and user is None:
+            await client.say("You haven't specified a role or a user! ")
 
-    if role not in ctx.message.server.roles or user not in ctx.message.server.members:
-        return await client.say("That role or user doesn't exist.")
+        if role not in ctx.message.server.roles or user not in ctx.message.server.members:
+            return await client.say("That role or user doesn't exist.")
 
-    if role not in ctx.message.author.roles and user == None:
-        await client.add_roles(ctx.message.author, role)
-        return await client.say("{} role has been added to {}.".format(role, ctx.message.author.mention))
+        if role not in ctx.message.author.roles and user == None:
+            await client.add_roles(ctx.message.author, role)
+            await client.say("{} role has been added to {}.".format(role, ctx.message.author.mention))
 
-    if role in ctx.message.author.roles and user == None:
-        await client.remove_roles(ctx.message.author, role)
-        return await client.say("{} role has been removed from {}."
-                                  .format(role, ctx.message.author.mention))
-    if  user != None and role not in user.roles:
-        await client.add_roles(user, role)
-        return await client.say("{} role has been added to {}.".format(role, user.mention))
+        if role in ctx.message.author.roles and user == None:
+            await client.remove_roles(ctx.message.author, role)
+            await client.say("{} role has been removed from {}."
+                                      .format(role, ctx.message.author.mention))
+        if  user != None and role not in user.roles:
+            await client.add_roles(user, role)
+            await client.say("{} role has been added to {}.".format(role, user.mention))
 
-    if  user != None and role in user.roles:
-        await client.remove_roles(user, role)
-        return await client.say("{} role has been removed from {}."
-                                  .format(role, user.mention))
+        if  user != None and role in user.roles:
+            await client.remove_roles(user, role)
+            await client.say("{} role has been removed from {}."
+                                      .format(role, user.mention))
+    else:
+        await client.say("Silly human, you do not have permission to use this command!")
 
 
 @client.command()
