@@ -187,7 +187,7 @@ async def ded():
 async def lockdown():
     """
     Puts the server on lockdown! WEE WOO WEE WOO!
-    :return:
+    :return: WEE WOO WEE WOO!
     """
     msg = '**THIS DISCORD IS NOW ON LOCKDOWN!**\r\r EVERYONE RETURN TO YOUR CELLS AND PREPARE FOR A SHAKEDOWN\r\r'
     gif = 'https://media1.tenor.com/images/66a0e064ab1aaff80f79a4801b3102a0/tenor.gif?itemid=8691616'
@@ -200,9 +200,9 @@ async def lockdown():
 async def bdsm(ctx, victim: discord.Member):
     """
     BDSM fun with you users.
-    :param ctx:
-    :param victim:
-    :return:
+    :param ctx: the message context
+    :param victim: the user who is being tied down
+    :return: bdsm fun
     """
     author = ctx.message.author
     if victim.id == author.id:
@@ -224,7 +224,7 @@ async def lick(ctx, victim: discord.Member):
     Licking fun... just don't lick me!
     :param ctx:
     :param victim:
-    :return:
+    :return: lick lick
     """
     author = ctx.message.author
     if victim.id == author.id:
@@ -242,7 +242,7 @@ async def lick(ctx, victim: discord.Member):
 async def roll():
     """
     rolls a d20 die
-    :return:
+    :return: The result depending on the result.
     """
     msg = random.randint(1,20)
     if msg == 1:
@@ -257,7 +257,7 @@ async def roll():
 async def ping():
     """
     Pong!
-    :return:
+    :return: Pong!
     """
     await client.say("Pong!")
 
@@ -267,7 +267,7 @@ async def newinvite(ctx):
     Creates a new invite to the server that has 1 use and lasts 15 minutes unless you are a
     privileged user.
     :param ctx:
-    :return:
+    :return: An embed of the link with its details.
     """
     if user_is_mod(ctx.message.author) or user_is_admin(ctx.message.author) or user_is_custom_role(ctx.message.author):
         max_age = 0
@@ -295,7 +295,7 @@ async def changegame(ctx, game):
     Changes my displayed game. Only for privileged users!
     :param ctx: message context.
     :param game: a string of the game I am playing.
-    :return:
+    :return: "Game Changed Successfully"
     """
     if user_is_mod(ctx.message.author) or user_is_admin(ctx.message.author) or user_is_custom_role(ctx.message.author):
         await client.change_presence(game=Game(name=game))
