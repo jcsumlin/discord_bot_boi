@@ -147,10 +147,10 @@ async def role(ctx, role: discord.Role = None, user: discord.Member = None):
         await client.add_roles(user, role)
         return await client.say("{} role has been added to {}.".format(role, user.mention))
 
-    if  user != None and role in user.roles :
+    if  user != None and role in user.roles:
         await client.remove_roles(user, role)
         return await client.say("{} role has been removed from {}."
-                                  .format(role, user))
+                                  .format(role, user.mention))
 
 
 @client.command()
