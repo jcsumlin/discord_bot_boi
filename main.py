@@ -125,7 +125,7 @@ async def hiatus():
 @client.command(name='timeout',
                 description="Put a user in the timeout zone!",
                 pass_context=True)
-async def timeout(ctx, victim : discord.User):
+async def timeout(ctx, victim : discord.Member):
     msg = ":police_car: {victim} has been put in timeout :police_car:".format(victim=victim.mention)
     role = "488807515774255114"
     await client.add_roles(victim, role)
