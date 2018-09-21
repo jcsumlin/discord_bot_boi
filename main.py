@@ -7,6 +7,8 @@ import discord
 from discord import Game
 from discord.ext.commands import Bot
 
+import twosixnine
+
 SEPERATOR = "\n------\n"
 BOT_PREFIX = "!"
 TOKEN = os.environ['token']
@@ -35,7 +37,7 @@ bdsm_user = ['{author} ties up {victim} with rope and gags them.',
 bdsm_bot = ['Sorry, i\'m with Lapis :blush:',
             'Only Lapis\' chains and whips can touch me.',
             'I\'m sorry, I only like you as a friend']
-
+twosixnine_scores = {'PhoenixVersion1':0, 'jeepdave':0, 'waspstinger106':0, 'kotsthepro':0, 'BlackoutAviation':0}
 
 def user_is_mod(user):
     author_roles = user.roles
@@ -303,6 +305,20 @@ async def changegame(ctx, game):
         await client.send_message(ctx.message.channel, embed=embedMsg)
     else:
         await client.say("You do not have permissions for this command! :robot:")
+
+@client.command(name="twosixnine",
+                pass_context=True,
+                aliases=['269', 'scores'])
+async def twosixnine(ctx):
+    for user in twosixnine.competitors:
+        twosixnine_scores[user] =+ twosixnine.get_scores(user, twosixnine_scores[user])
+    embedMsg = discord.Embed(color=0xE87722,title="__269 Days of Shitposts Challenge__")
+    embedMsg.add_field(name="Jeep", value=str(twosixnine_scores['jeepdave']))
+    embedMsg.add_field(name="PhoenixVersion1", value=str(twosixnine_scores['PhoenixVersion1']))
+    embedMsg.add_field(name="Waspstinger106", value=str(twosixnine_scores['waspstinger106']))
+    embedMsg.add_field(name="Kots", value=str(twosixnine_scores['kotsthepro']))
+    embedMsg.add_field(name="BlackoutAviation", value=str(twosixnine_scores['BlackoutAviation']))
+    await client.send_message(ctx.message.channel, embed=embedMsg)
 
 
 @client.event
