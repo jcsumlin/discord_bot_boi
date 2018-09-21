@@ -331,7 +331,7 @@ async def changegame(ctx, game):
                 aliases=['269', 'scores'])
 async def twosixnine(ctx):
     for user in competitors:
-        twosixnine_scores[user] = get_scores(user, twosixnine_scores[user])
+        twosixnine_scores[user] = get_scores(user)
     embedMsg = discord.Embed(color=0xE87722,title="__269 Days of Shitposts Challenge__")
     embedMsg.add_field(name="Jeep", value=str(twosixnine_scores['jeepdave']))
     embedMsg.add_field(name="PhoenixVersion1", value=str(twosixnine_scores['PhoenixVersion1']))
