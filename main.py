@@ -38,6 +38,7 @@ bdsm_bot = ['Sorry, i\'m with Lapis :blush:',
             'Only Lapis\' chains and whips can touch me.',
             'I\'m sorry, I only like you as a friend']
 twosixnine_scores = {'PhoenixVersion1':0, 'jeepdave':0, 'waspstinger106':0, 'kotsthepro':0, 'BlackoutAviation':0}
+competitors = ['PhoenixVersion1', 'jeepdave', 'waspstinger106', 'kotsthepro', 'BlackoutAviation']
 
 def user_is_mod(user):
     author_roles = user.roles
@@ -310,7 +311,7 @@ async def changegame(ctx, game):
                 pass_context=True,
                 aliases=['269', 'scores'])
 async def twosixnine(ctx):
-    for user in twosixnine.competitors:
+    for user in competitors:
         twosixnine_scores[user] =+ twosixnine.get_scores(user, twosixnine_scores[user])
     embedMsg = discord.Embed(color=0xE87722,title="__269 Days of Shitposts Challenge__")
     embedMsg.add_field(name="Jeep", value=str(twosixnine_scores['jeepdave']))
