@@ -4,10 +4,9 @@ import re
 from datetime import datetime
 
 import discord
+import praw
 from discord import Game
 from discord.ext.commands import Bot
-
-import twosixnine
 
 SEPERATOR = "\n------\n"
 BOT_PREFIX = "!"
@@ -37,8 +36,28 @@ bdsm_user = ['{author} ties up {victim} with rope and gags them.',
 bdsm_bot = ['Sorry, i\'m with Lapis :blush:',
             'Only Lapis\' chains and whips can touch me.',
             'I\'m sorry, I only like you as a friend']
-twosixnine_scores = {'PhoenixVersion1':0, 'jeepdave':0, 'waspstinger106':0, 'kotsthepro':0, 'BlackoutAviation':0}
+twosixnine_scores = {'PhoenixVersion1':0,
+                     'jeepdave':0,
+                     'waspstinger106':0,
+                     'kotsthepro':0,
+                     'BlackoutAviation':0}
 competitors = ['PhoenixVersion1', 'jeepdave', 'waspstinger106', 'kotsthepro', 'BlackoutAviation']
+
+reddit = praw.Reddit(client_id=os.environ['reddit_client_id'],
+                     client_secret=os.environ['reddit_client_secret'],
+                     password=os.environ['reddit_password'],
+                     user_agent='SVTFOE command bot (by u/J_C___)',
+                     username=os.environ['reddit_username'])
+
+
+def get_scores(user, score=0):
+    for submission in reddit.redditor(user).submissions.new():
+        if '/269' in submission.title:
+            # print(submission.title + ':' + str(submission.score))
+            score = score + int(submission.score)
+            # print(score)
+    return score
+
 
 def user_is_mod(user):
     author_roles = user.roles
@@ -312,7 +331,7 @@ async def changegame(ctx, game):
                 aliases=['269', 'scores'])
 async def twosixnine(ctx):
     for user in competitors:
-        twosixnine_scores[user] =+ twosixnine.get_scores(user, twosixnine_scores[user])
+        twosixnine_scores[user] =+ get_scores(user, twosixnine_scores[user])
     embedMsg = discord.Embed(color=0xE87722,title="__269 Days of Shitposts Challenge__")
     embedMsg.add_field(name="Jeep", value=str(twosixnine_scores['jeepdave']))
     embedMsg.add_field(name="PhoenixVersion1", value=str(twosixnine_scores['PhoenixVersion1']))
