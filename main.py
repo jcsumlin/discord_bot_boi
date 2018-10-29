@@ -355,7 +355,7 @@ async def on_ready():
 async def twitch_notification():
     await client.wait_until_ready()
     counter = 0
-    channel = discord.Object(id='q4lvjw1zm9272c4r8mzdxxob6bqrl4')
+    channel = discord.Object(id='506528618068049927')
     while not client.is_closed:
         counter += 1
         await client.send_message(channel, counter)
