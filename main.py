@@ -213,7 +213,7 @@ async def addtwitch(username):
     :return: True.
     """
     twitch_client = TwitchClient(client_id='q4lvjw1zm9272c4r8mzdxxob6bqrl4')
-    if twitch_client.users.translate_usernames_to_ids(username):
+    if len(twitch_client.users.translate_usernames_to_ids(username)) > 0:
         twitch_users.append(username)
         await client.say("User Added!")
     else:
