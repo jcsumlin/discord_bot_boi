@@ -364,9 +364,9 @@ async def twitch_notification():
             if stream != None and stream.stream_type == 'live':
                 msg = "Hey! {user} is live go check it out! {url}".format(user=user.display_name, url=stream.channel.url)
                 embedMsg = discord.Embed(color=0x6441A4, title="[{title}]({url})".format(title=stream.channel.status, url=stream.channel.url))
-                embedMsg.author(name=user.display_name, icon_url=stream.channel.logo)
+                embedMsg.set_author(name=user.display_name, icon_url=stream.channel.logo)
                 embedMsg.add_field(name="Title", value=stream.channel.status)
-                embedMsg.image(url=stream.preview.medium)
+                embedMsg.set_image(url=stream.preview.medium)
                 await client.send_message(channel, msg)
                 await client.send_message(channel, embed=embedMsg)
         await asyncio.sleep(5)
