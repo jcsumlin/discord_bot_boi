@@ -1,2 +1,4 @@
 discord.py
 praw
+python-twitch-client
+asyncio
