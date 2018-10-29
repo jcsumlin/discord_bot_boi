@@ -352,7 +352,7 @@ async def on_ready():
     print('------')
     # await client.say("%s booting process complete." % client.user.name)
 
-twitch_users = ['blackoutxdd', 'thericoestrico', 'slamdefect', 'yogscast']
+twitch_users = ['blackoutxdd', 'thericoestrico', 'slamdefect', 'kotsthepro']
 stream_ids = []
 async def twitch_notification():
     await client.wait_until_ready()
