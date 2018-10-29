@@ -8,7 +8,6 @@ import discord
 import praw
 from discord import Game
 from discord.ext.commands import Bot
-from twitch import TwitchClient
 
 SEPERATOR = "\n------\n"
 BOT_PREFIX = "!"
@@ -354,23 +353,29 @@ async def on_ready():
 
 
 async def twitch_notification():
-    await Bot.wait_until_ready()
-    while not Bot.is_closed:
-        channel = discord.Object(id='506528618068049927')
-        twitch_client = TwitchClient(client_id='q4lvjw1zm9272c4r8mzdxxob6bqrl4')
-        users = twitch_client.users.translate_usernames_to_ids(twitch_users)
-        for user in users:
-            stream = twitch_client.streams.get_stream_by_user(user.id)
-            if stream != None and stream.stream_type == 'live':
-                msg = "Hey! {user} is live go check it out! {url}".format(user=user.display_name, url=stream.channel.url)
-                embedMsg = discord.Embed(color=0x6441A4, title="[{title}]({url})".format(title=stream.channel.status, url=stream.channel.url))
-                embedMsg.author(name=user.display_name, icon_url=stream.channel.logo)
-                embedMsg.add_field(name="Title", value=stream.channel.status)
-                embedMsg.image(url=stream.preview.medium)
-                await client.send_message(channel, msg)
-                await client.send_message(channel, embed=embedMsg)
-        await asyncio.sleep(5)
+    await client.wait_until_ready()
+    counter = 0
+    channel = discord.Object(id='q4lvjw1zm9272c4r8mzdxxob6bqrl4')
+    while not client.is_closed:
+        counter += 1
+        await client.send_message(channel, counter)
+        await asyncio.sleep(60)  # task runs every 60 seconds
+    # await Bot.wait_until_ready()
+    # while not Bot.is_closed:
+    #     channel = discord.Object(id='506528618068049927')
+    #     twitch_client = TwitchClient(client_id='q4lvjw1zm9272c4r8mzdxxob6bqrl4')
+    #     users = twitch_client.users.translate_usernames_to_ids(twitch_users)
+    #     for user in users:
+    #         stream = twitch_client.streams.get_stream_by_user(user.id)
+    #         if stream != None and stream.stream_type == 'live':
+    #             msg = "Hey! {user} is live go check it out! {url}".format(user=user.display_name, url=stream.channel.url)
+    #             embedMsg = discord.Embed(color=0x6441A4, title="[{title}]({url})".format(title=stream.channel.status, url=stream.channel.url))
+    #             embedMsg.author(name=user.display_name, icon_url=stream.channel.logo)
+    #             embedMsg.add_field(name="Title", value=stream.channel.status)
+    #             embedMsg.image(url=stream.preview.medium)
+    #             await client.send_message(channel, msg)
+    #             await client.send_message(channel, embed=embedMsg)
+    #     await asyncio.sleep(5)
 
-
-client.run(TOKEN)
 client.loop.create_task(twitch_notification())
+client.run(TOKEN)
