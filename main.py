@@ -1,4 +1,3 @@
-import asyncio
 import os
 import random
 import re
@@ -14,7 +13,7 @@ SEPERATOR = "\n------\n"
 BOT_PREFIX = "!"
 TOKEN = os.environ['token']
 client = Bot(command_prefix=BOT_PREFIX)
-twitch_users = ['blackoutxdd', 'thericoestrico', 'slamdefect', 'yogscast']
+
 lick_self = ['{username} stretches their leg towards the sky and begins to lick themself like a cat',
              '{username} begins to lick the palm of their hand hoping no one noticed.',
              '{username} uses *Lick*, its super effective!']
@@ -352,7 +351,8 @@ async def on_ready():
     print('------')
     # await client.say("%s booting process complete." % client.user.name)
 
-
+twitch_users = ['blackoutxdd', 'thericoestrico', 'slamdefect', 'yogscast']
+stream_ids = []
 async def twitch_notification():
     await client.wait_until_ready()
     channel = discord.Object(id='506528618068049927')
@@ -361,15 +361,16 @@ async def twitch_notification():
         users = twitch_client.users.translate_usernames_to_ids(twitch_users)
         for user in users:
             stream = twitch_client.streams.get_stream_by_user(user.id)
-            if stream != None and stream.stream_type == 'live':
-                msg = "Hey! {user} is live go check it out! {url}".format(user=user.display_name, url=stream.channel.url)
+            if stream != None and stream.stream_type == 'live' and stream.id not in stream_ids:
+                msg = "Hey! {user} is live go check it out!".format(user=user.display_name)
                 embedMsg = discord.Embed(color=0x6441A4, title="[{title}]({url})".format(title=stream.channel.status, url=stream.channel.url))
                 embedMsg.set_author(name=user.display_name, icon_url=stream.channel.logo)
                 embedMsg.add_field(name="Title", value=stream.channel.status)
                 embedMsg.set_image(url=stream.preview['medium'])
                 await client.send_message(channel, msg)
                 await client.send_message(channel, embed=embedMsg)
-        await asyncio.sleep(5)
+                stream_ids.append(stream.id)
 
-client.loop.create_task(twitch_notification())
+
+# client.loop.create_task(twitch_notification())
 client.run(TOKEN)
