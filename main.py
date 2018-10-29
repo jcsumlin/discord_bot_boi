@@ -206,6 +206,20 @@ async def ded():
     msg = 'https://media.giphy.com/media/3oriff4xQ7Oq2TIgTu/giphy.gif'
     await client.say(msg)
 
+@client.command()
+async def addtwitch(username):
+    """
+    Add a Twitch streamer to the list of watched streamers. Use username please.
+    :return: True.
+    """
+    twitch_client = TwitchClient(client_id='q4lvjw1zm9272c4r8mzdxxob6bqrl4')
+    if twitch_client.users.translate_usernames_to_ids(username):
+        twitch_users.append(username)
+        await client.say("User Added!")
+    else:
+        await client.say("User does not exist!")
+
+
 
 @client.command()
 async def lockdown():
