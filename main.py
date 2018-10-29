@@ -356,7 +356,7 @@ async def on_ready():
 async def twitch_notification():
     await client.wait_until_ready()
     channel = discord.Object(id='506528618068049927')
-    while not Bot.is_closed:
+    while not client.is_closed:
         twitch_client = TwitchClient(client_id='q4lvjw1zm9272c4r8mzdxxob6bqrl4')
         users = twitch_client.users.translate_usernames_to_ids(twitch_users)
         for user in users:
