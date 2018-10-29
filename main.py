@@ -372,5 +372,5 @@ async def twitch_notification():
                 stream_ids.append(stream.id)
 
 
-# client.loop.create_task(twitch_notification())
+client.loop.create_task(twitch_notification())
 client.run(TOKEN)
