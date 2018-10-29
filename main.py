@@ -368,7 +368,7 @@ async def on_ready():
 
 twitch_users = ['blackoutxdd', 'thericoestrico', 'slamdefect', 'kotsthepro']
 stream_ids = []
-async def twitch_notification():
+async def twitch_notification(twitch_users):
     await client.wait_until_ready()
     channel = discord.Object(id='506528618068049927')
     twitch_client = TwitchClient(client_id='q4lvjw1zm9272c4r8mzdxxob6bqrl4')
@@ -389,5 +389,5 @@ async def twitch_notification():
             await asyncio.sleep(5)
 
 
-client.loop.create_task(twitch_notification())
+client.loop.create_task(twitch_notification(twitch_users))
 client.run(TOKEN)
