@@ -1,3 +1,4 @@
+import asyncio
 import os
 import random
 import re
@@ -363,13 +364,16 @@ async def twitch_notification():
             stream = twitch_client.streams.get_stream_by_user(user.id)
             if stream != None and stream.stream_type == 'live' and stream.id not in stream_ids:
                 msg = "Hey! {user} is live go check it out!".format(user=user.display_name)
-                embedMsg = discord.Embed(color=0x6441A4, title="[{title}]({url})".format(title=stream.channel.status, url=stream.channel.url))
+                embedMsg = discord.Embed(color=0x6441A4,
+                                         title="{title}".format(title=stream.channel.status),
+                                         url=stream.channel.url)
                 embedMsg.set_author(name=user.display_name, icon_url=stream.channel.logo)
                 embedMsg.add_field(name="Title", value=stream.channel.status)
                 embedMsg.set_image(url=stream.preview['medium'])
                 await client.send_message(channel, msg)
                 await client.send_message(channel, embed=embedMsg)
                 stream_ids.append(stream.id)
+                await asyncio.sleep(5)
 
 
 client.loop.create_task(twitch_notification())
